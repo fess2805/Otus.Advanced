@@ -31,6 +31,13 @@ namespace Practice_1;
 
 public static class CommandParser
 {
+
+    public static CommandParserResult<char> Parse(ReadOnlySpan<byte> input)
+    {
+        var charSpan = MemoryMarshal.Cast<byte, char>(input);
+        return Parse(charSpan);
+    }
+
     public static CommandParserResult<char> Parse(ReadOnlySpan<char> input)
     {
         if (input.Length < 3) return CommandParserResult<char>.Default;
