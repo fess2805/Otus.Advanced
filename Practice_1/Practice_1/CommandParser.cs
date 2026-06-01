@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices;
+using System.Text;
+
 
 namespace Practice_1;
 
@@ -34,7 +36,11 @@ public static class CommandParser
 
     public static CommandParserResult<char> Parse(ReadOnlySpan<byte> input)
     {
-        var charSpan = MemoryMarshal.Cast<byte, char>(input);
+        /*Span<char> tempBuffer = stackalloc char[input.Length];
+        int charsWritten = Encoding.UTF8. ToCharSpan(byteData.Span, tempBuffer, out bool completed);*/
+        string decodedString = Encoding.UTF8.GetString(input);
+        var charSpan = decodedString.AsSpan();
+        //var charSpan = MemoryMarshal.Cast<byte, char>(input);
         return Parse(charSpan);
     }
 

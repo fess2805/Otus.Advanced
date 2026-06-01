@@ -84,8 +84,7 @@ namespace Practice_2
 
         private async Task ProcessClientAsync(Socket clientSocket)
         {
-            const int BufferSize = 1024;
-
+            var BufferSize = 1024;
             try
             {
                 while (true)
@@ -140,7 +139,6 @@ namespace Practice_2
             }
 
             socket.Close();
-            socket.Dispose();
         }
     }
 }
