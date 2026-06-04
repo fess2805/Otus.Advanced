@@ -67,8 +67,8 @@ namespace Practice_2
                 {                    
                     var clientSocket = await _serverSocket!.AcceptAsync();
                     Console.WriteLine("Новое подключение получено");
-                   
-                    _ = ProcessClientAsync(clientSocket);
+
+                    _ = Task.Run(() => ProcessClientAsync(clientSocket));
                 }
                 catch (SocketException se) when (!_isRunning)
                 {
@@ -87,7 +87,7 @@ namespace Practice_2
             var BufferSize = 1024;
             try
             {
-                while (true)
+                while (_isRunning)
                 {                    
                     var buffer = ArrayPool<byte>.Shared.Rent(BufferSize);
 
@@ -106,8 +106,8 @@ namespace Practice_2
                         var data = new ReadOnlyMemory<byte>(buffer, 0, received);
                         
                         var result = CommandParser.Parse(data.Span);
-
-                        Console.WriteLine($"Получено: Команда={result.Command}, Ключ={result.Key}, Значение={result.Value}");
+                        Console.WriteLine(result.Key.IsEmpty ? $"Отсутствует команда в сообщении" :
+                            $"Получено: Команда={result.Command}, Ключ={result.Key}, Значение={result.Value}");
                     }
                     finally
                     {
